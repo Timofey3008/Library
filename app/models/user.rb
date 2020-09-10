@@ -5,7 +5,6 @@ class User < ApplicationRecord
 
   before_create -> {self.token = generate_token}
   before_create :hash_password
-  #:dehash_password
 
   private
 
@@ -19,9 +18,4 @@ class User < ApplicationRecord
   def hash_password
     self.password = BCrypt::Password.create(self.password)
   end
-
-  def dehash_password
-    self.password = BCrypt::Password.new(self.password)
-  end
-
 end
