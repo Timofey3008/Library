@@ -1,11 +1,26 @@
 module Api
   module V1
     class UsersController < ApplicationController
+      attr_reader :user
 
       def index
-        @user = User.find_by(user_params)
-        if @user == nil
-          render json: 'Incorrect credentials', status: :not_found
+        @users = User.all
+      end
+
+      def show
+        @user = User.find(params[:id])
+      end
+
+      def login
+        @user = User
+                    .select('password, token')
+                    .find_by('mail' => params.require(:user).require(:mail))
+        if @user != nil
+          if decrypt == params.require(:user).require(:password)
+            @user
+          end
+        else
+          render json: 'Incorrect credentials', status: :unprocessable_entity
         end
       end
 
@@ -22,6 +37,10 @@ module Api
 
       def user_params
         params.require(:user).permit(:mail, :password)
+      end
+
+      def decrypt
+        BCrypt::Password.new(@user.password)
       end
     end
   end
