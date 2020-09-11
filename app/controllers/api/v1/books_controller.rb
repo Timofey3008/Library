@@ -4,7 +4,13 @@ module Api
       include ActionController::HttpAuthentication::Token::ControllerMethods
       before_action :authenticate
       def create
-        @book = Book.new(book_name)
+        @book = @user.books.new(book_name)
+        if @book.save
+          UserMailer.with(book: @book, user: @user).book_registration.deliver_now
+          render status: :created
+        else
+          render json: @book. errors, status: :unprocessable_entity
+        end
       end
 
       private
