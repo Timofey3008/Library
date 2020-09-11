@@ -1,0 +1,2 @@
+
+json.token @user.token
