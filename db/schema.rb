@@ -10,17 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_10_172219) do
+ActiveRecord::Schema.define(version: 2020_09_14_155459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "books", force: :cascade do |t|
     t.string "name"
-    t.bigint "user_id", null: false
+    t.bigint "owner_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_books_on_user_id"
+    t.integer "status", default: 0
+    t.date "deadLine"
+    t.integer "reader"
+    t.index ["owner_id"], name: "index_books_on_owner_id"
+  end
+
+  create_table "reserveds", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "book_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["book_id"], name: "index_reserveds_on_book_id"
+    t.index ["user_id"], name: "index_reserveds_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -32,5 +44,5 @@ ActiveRecord::Schema.define(version: 2020_09_10_172219) do
     t.index ["token"], name: "index_users_on_token", unique: true
   end
 
-  add_foreign_key "books", "users"
+  add_foreign_key "books", "users", column: "owner_id"
 end

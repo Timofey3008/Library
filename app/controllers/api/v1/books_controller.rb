@@ -3,6 +3,11 @@ module Api
     class BooksController < ApplicationController
       include ActionController::HttpAuthentication::Token::ControllerMethods
       before_action :authenticate
+
+      def index
+        @books = Book.where("status = '0'")
+      end
+
       def create
         @book = @user.books.new(book_name)
         if @book.save
@@ -11,6 +16,14 @@ module Api
         else
           render json: @book. errors, status: :unprocessable_entity
         end
+      end
+
+      def show
+        @book = Book.find(params[:id])
+        @book.reader = @user.id
+        @book.status = 1
+        @book.deadLine = DateTime.now + 1.months
+        @book.save
       end
 
       private

@@ -1,6 +1,7 @@
 class User < ApplicationRecord
-
-  has_many :books
+  has_many :books, foreign_key: :owner_id
+  # has_many :reserveds
+  # has_many :books, through: :reserveds
 
   validates :mail, presence: true, uniqueness: true
   validates :password, presence: true
