@@ -7,4 +7,8 @@ class UserMailerPreview < ActionMailer::Preview
   def book_registration
     UserMailer.with(book: Book.first, user: User.last).book_registration
   end
+
+  def book_reserved
+    UserMailer.with(book: Book.last).book_reserved
+  end
 end

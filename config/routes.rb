@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       resources :books
       resources :users
       post 'login', to: 'users#login'
+      post 'books/reserve/:id', to: 'books#reserve'
     end
   end
 end

@@ -12,4 +12,11 @@ class UserMailer < ApplicationMailer
     @book = params[:book]
     mail(to: @user.mail, subject: "#{@book.name} successfully registered")
   end
+
+  def book_reserved
+    @book = params[:book]
+    @owner = User.find(@book.owner_id)
+    @user = User.find(@book.reader)
+    mail(to: @user.mail, cc: @owner.mail, subject: "Book #{@book.name} was successfully reserved")
+  end
 end
