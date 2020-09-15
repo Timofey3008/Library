@@ -19,4 +19,10 @@ class UserMailer < ApplicationMailer
     @user = User.find(@book.reader)
     mail(to: @user.mail, cc: @owner.mail, subject: "Book #{@book.name} was successfully reserved")
   end
+
+  def reminder
+    @book = params[:book]
+    @user = User.find(@book.reader)
+    mail(to: @user.mail, subject: 'You need to return book to the Library')
+  end
 end
