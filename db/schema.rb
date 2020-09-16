@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_14_155459) do
+ActiveRecord::Schema.define(version: 2020_09_16_120039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,8 +21,8 @@ ActiveRecord::Schema.define(version: 2020_09_14_155459) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0
-    t.date "deadLine"
-    t.integer "reader"
+    t.date "dead_line"
+    t.integer "reader_user_id"
     t.index ["owner_id"], name: "index_books_on_owner_id"
   end
 
