@@ -13,6 +13,15 @@ module Api
         end
       end
 
+      def user_read
+        @book = Book.find_by(reader_user_id: @user.id, status: :reserved)
+        if @book.present?
+          @book
+        else
+          render json: "You don't have reserved books", status: :unprocessable_entity
+        end
+      end
+
       def create
         @book = @user.books.new(book_name)
         if @book.save
