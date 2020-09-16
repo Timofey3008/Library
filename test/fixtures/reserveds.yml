@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  reserveDate: 2020-09-14
+  deadLine: 2020-09-14
+  status: 1
+
+two:
+  reserveDate: 2020-09-14
+  deadLine: 2020-09-14
+  status: 1
