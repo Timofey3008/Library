@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       resources :users
       post 'login', to: 'users#login'
       post 'books/reserve/:id', to: 'books#reserve'
+      post 'books/return/:id', to: 'books#return'
     end
   end
 end

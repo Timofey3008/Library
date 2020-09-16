@@ -24,15 +24,13 @@ module Api
       end
 
       def reserve
-        if Book.find_by('reader' => @user.id)
+        if Book.find_by('reader_user_id' => @user.id)
           render json: 'You already have book. Only one book can be taken', status: :unprocessable_entity
         else
           @book = Book.find_by('id' => params[:id])
           if @book.present?
             if @book.in_library?
-              @book.reader = @user.id
-              @book.status = 1
-              @book.deadLine = DateTime.now + 1.months
+              @book.update(status: :reserved, reader_user_id: @user.id, dead_line: DateTime.now + 1.months)
               @book.save
               UserMailer.with(book: @book).book_reserved.deliver_now
             else
@@ -41,6 +39,16 @@ module Api
           else
             render json: "Book doesn't exist", status: :unprocessable_entity
           end
+        end
+      end
+
+      def return
+        @book = Book.find_by(id: params[:id], reader_user_id: @user.id)
+        if @book.present?
+          UserMailer.with(book: @book).return.deliver_now
+          @book.update(status: :in_library, reader_user_id: nil, dead_line: nil)
+        else
+          render json: "You don't have this book", status: :unprocessable_entity
         end
       end
 
