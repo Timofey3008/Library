@@ -15,9 +15,11 @@ module Api
         @user = User
                     .select('password, token')
                     .find_by('mail' => params.require(:user).require(:mail))
-        if @user != nil
+        if @user.present?
           if decrypt == params.require(:user).require(:password)
             @user
+          else
+            render json: 'Incorrect credentials', status: :unprocessable_entity
           end
         else
           render json: 'Incorrect credentials', status: :unprocessable_entity
