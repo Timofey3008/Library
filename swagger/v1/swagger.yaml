@@ -1,0 +1,142 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/books":
+    get:
+      summary: list books
+      responses:
+        '200':
+          description: successful
+          content: {}
+    post:
+      summary: create book
+      tags:
+      - Encounters
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                patient_id:
+                  type: integer
+                provider_id:
+                  type: integer
+              required:
+              - patient_id
+              - provider_id
+  "/api/v1/books/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show book
+      responses:
+        '200':
+          description: successful
+          content: {}
+    patch:
+      summary: update book
+      responses:
+        '200':
+          description: successful
+          content: {}
+    put:
+      summary: update book
+      responses:
+        '200':
+          description: successful
+          content: {}
+    delete:
+      summary: delete book
+      responses:
+        '200':
+          description: successful
+          content: {}
+  "/api/v1/books/reserve/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    post:
+      summary: reserve book
+      responses:
+        '200':
+          description: successful
+          content: {}
+  "/api/v1/books/return/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    post:
+      summary: return book
+      responses:
+        '200':
+          description: successful
+          content: {}
+  "/api/v1/book/user_read":
+    get:
+      summary: user_read book
+      responses:
+        '200':
+          description: successful
+          content: {}
+  "/api/v1/book/own_books":
+    get:
+      summary: own_books book
+      responses:
+        '200':
+          description: successful
+          content: {}
+  "/api/v1/book/available_books":
+    get:
+      summary: available_books book
+      responses:
+        '200':
+          description: successful
+          content: {}
+  "/api/v1/book/return_to_owner/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    post:
+      summary: return_to_owner book
+      responses:
+        '200':
+          description: successful
+          content: {}
+  "/api/v1/book/expired":
+    get:
+      summary: expired book
+      responses:
+        '200':
+          description: successful
+          content: {}
+servers:
+- url: " http://localhost:3000"
+  variables:
+    defaultHost:
+      default: " http://localhost:3000"
