@@ -3,8 +3,9 @@ require 'swagger_helper'
 RSpec.describe 'api/v1/books', type: :request do
 
   path '/api/v1/books' do
-
-    get('list books') do
+    get('List of books') do
+      tags "Books"
+      security [ bearerAuth: [] ]
       response(200, 'successful') do
 
         after do |example|
@@ -12,18 +13,22 @@ RSpec.describe 'api/v1/books', type: :request do
         end
         run_test!
       end
+      response '401', 'authentication failed' do
+        let(:Authorization) { "Basic #{::Base64.strict_encode64('bogus:bogus')}" }
+        run_test!
+      end
     end
 
-    post('Register book') do
+    post('Registration of the book') do
       tags "Books"
+      security [ bearerAuth: [] ]
       consumes "application/json"
-      parameter name: :encounter, in: :body, schema: {
+      parameter name: :book, in: :body, schema: {
           type: :object,
           properties: {
-              patient_id: { type: :integer },
-              provider_id: { type: :integer },
+              name: { type: :string },
           },
-          required: ["patient_id", "provider_id"],
+          required: ["name"],
       }
 
       response(200, 'successful') do
@@ -33,69 +38,52 @@ RSpec.describe 'api/v1/books', type: :request do
         end
         run_test!
       end
+      response '401', 'authentication failed' do
+        let(:Authorization) { "Basic #{::Base64.strict_encode64('bogus:bogus')}" }
+        run_test!
+      end
     end
   end
 
   path '/api/v1/books/{id}' do
     # You'll want to customize the parameter types...
-    parameter name: 'id', in: :path, type: :string, description: 'id'
+    parameter name: 'id', in: :path, type: :string
 
-    get('show book') do
+    get('Show book') do
+      tags "Books"
+      security [ bearerAuth: [] ]
       response(200, 'successful') do
-        let(:id) { '123' }
+        let(:id) { '12' }
 
         after do |example|
           example.metadata[:response][:examples] = { 'application/json' => JSON.parse(response.body, symbolize_names: true) }
         end
         run_test!
       end
-    end
-
-    patch('update book') do
-      response(200, 'successful') do
-        let(:id) { '123' }
-
-        after do |example|
-          example.metadata[:response][:examples] = { 'application/json' => JSON.parse(response.body, symbolize_names: true) }
-        end
+      response '401', 'authentication failed' do
+        let(:Authorization) { "Basic #{::Base64.strict_encode64('bogus:bogus')}" }
         run_test!
       end
     end
-
-    put('update book') do
-      response(200, 'successful') do
-        let(:id) { '123' }
-
-        after do |example|
-          example.metadata[:response][:examples] = { 'application/json' => JSON.parse(response.body, symbolize_names: true) }
-        end
-        run_test!
-      end
-    end
-
-    delete('delete book') do
-      response(200, 'successful') do
-        let(:id) { '123' }
-
-        after do |example|
-          example.metadata[:response][:examples] = { 'application/json' => JSON.parse(response.body, symbolize_names: true) }
-        end
-        run_test!
-      end
-    end
-  end
+   end
 
   path '/api/v1/books/reserve/{id}' do
     # You'll want to customize the parameter types...
-    parameter name: 'id', in: :path, type: :string, description: 'id'
+    parameter name: 'id', in: :path, type: :string
 
-    post('reserve book') do
+    post('Reserve book') do
+      tags "Books"
+      security [ bearerAuth: [] ]
       response(200, 'successful') do
         let(:id) { '123' }
 
         after do |example|
           example.metadata[:response][:examples] = { 'application/json' => JSON.parse(response.body, symbolize_names: true) }
         end
+        run_test!
+      end
+      response '401', 'authentication failed' do
+        let(:Authorization) { "Basic #{::Base64.strict_encode64('bogus:bogus')}" }
         run_test!
       end
     end
@@ -105,7 +93,9 @@ RSpec.describe 'api/v1/books', type: :request do
     # You'll want to customize the parameter types...
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
-    post('return book') do
+    post('Return book') do
+      tags "Books"
+      security [ bearerAuth: [] ]
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -114,17 +104,27 @@ RSpec.describe 'api/v1/books', type: :request do
         end
         run_test!
       end
+      response '401', 'authentication failed' do
+        let(:Authorization) { "Basic #{::Base64.strict_encode64('bogus:bogus')}" }
+        run_test!
+      end
     end
   end
 
   path '/api/v1/book/user_read' do
 
-    get('user_read book') do
+    get('Show book which user read') do
+      tags "Books"
+      security [ bearerAuth: [] ]
       response(200, 'successful') do
 
         after do |example|
           example.metadata[:response][:examples] = { 'application/json' => JSON.parse(response.body, symbolize_names: true) }
         end
+        run_test!
+      end
+      response '401', 'authentication failed' do
+        let(:Authorization) { "Basic #{::Base64.strict_encode64('bogus:bogus')}" }
         run_test!
       end
     end
@@ -132,7 +132,9 @@ RSpec.describe 'api/v1/books', type: :request do
 
   path '/api/v1/book/own_books' do
 
-    get('own_books book') do
+    get('Show own books') do
+      tags "Books"
+      security [ bearerAuth: [] ]
       response(200, 'successful') do
 
         after do |example|
@@ -140,17 +142,27 @@ RSpec.describe 'api/v1/books', type: :request do
         end
         run_test!
       end
+      response '401', 'authentication failed' do
+        let(:Authorization) { "Basic #{::Base64.strict_encode64('bogus:bogus')}" }
+        run_test!
+      end
     end
   end
 
   path '/api/v1/book/available_books' do
 
-    get('available_books book') do
+    get('Show available books') do
+      tags "Books"
+      security [ bearerAuth: [] ]
       response(200, 'successful') do
 
         after do |example|
           example.metadata[:response][:examples] = { 'application/json' => JSON.parse(response.body, symbolize_names: true) }
         end
+        run_test!
+      end
+      response '401', 'authentication failed' do
+        let(:Authorization) { "Basic #{::Base64.strict_encode64('bogus:bogus')}" }
         run_test!
       end
     end
@@ -160,7 +172,9 @@ RSpec.describe 'api/v1/books', type: :request do
     # You'll want to customize the parameter types...
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
-    post('return_to_owner book') do
+    post('Return book to owner') do
+      tags "Books"
+      security [ bearerAuth: [] ]
       response(200, 'successful') do
         let(:id) { '123' }
 
@@ -169,17 +183,27 @@ RSpec.describe 'api/v1/books', type: :request do
         end
         run_test!
       end
+      response '401', 'authentication failed' do
+        let(:Authorization) { "Basic #{::Base64.strict_encode64('bogus:bogus')}" }
+        run_test!
+      end
     end
   end
 
   path '/api/v1/book/expired' do
 
-    get('expired book') do
+    get('Show expired books') do
+      tags "Books"
+      security [ bearerAuth: [] ]
       response(200, 'successful') do
 
         after do |example|
           example.metadata[:response][:examples] = { 'application/json' => JSON.parse(response.body, symbolize_names: true) }
         end
+        run_test!
+      end
+      response '401', 'authentication failed' do
+        let(:Authorization) { "Basic #{::Base64.strict_encode64('bogus:bogus')}" }
         run_test!
       end
     end

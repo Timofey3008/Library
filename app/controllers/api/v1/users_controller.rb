@@ -1,14 +1,26 @@
 module Api
   module V1
     class UsersController < ApplicationController
+      include ActionController::HttpAuthentication::Token::ControllerMethods
       attr_reader :user
+      before_action :authenticate, only: [:index, :show]
 
       def index
-        @users = User.all
+        if @user.mail == 'tim1584569@mail.ru'
+          @user = User.all
+        else
+          @message = "You don't have access"
+          render 'access'
+        end
       end
 
       def show
-        @user = User.find(params[:id])
+        if @user.mail == 'tim1584569@mail.ru'
+          @user = User.find(params[:id])
+        else
+          @message = "You don't have access"
+          render 'access'
+        end
       end
 
       def login
@@ -19,10 +31,12 @@ module Api
           if decrypt == params.require(:user).require(:password)
             @user
           else
-            render json: 'Incorrect credentials', status: :unprocessable_entity
+            @message = 'Incorrect credentials'
+            render 'fail'
           end
         else
-          render json: 'Incorrect credentials', status: :unprocessable_entity
+          @message = 'Incorrect credentials'
+          render 'fail'
         end
       end
 
@@ -45,6 +59,12 @@ module Api
 
       def decrypt
         BCrypt::Password.new(@user.password)
+      end
+
+      def authenticate
+        authenticate_or_request_with_http_token do |token, options|
+          @user = User.find_by(token: token)
+        end
       end
     end
   end

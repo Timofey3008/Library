@@ -1,3 +1,6 @@
 
-json.token @user.token
-#json.password @password.password
+json.code("200")
+json.status("OK")
+json.data do
+  json.token @user.token
+end

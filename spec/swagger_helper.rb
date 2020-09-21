@@ -21,19 +21,28 @@ RSpec.configure do |config|
         title: 'API V1',
         version: 'v1'
       },
+      components: {
+          securitySchemes: {
+              bearerAuth: {
+                  type: :http,
+                  scheme: :bearer
+              },
+          }
+      },
       paths: {},
       servers: [
         {
-          url: ' http://localhost:3000',
+          url: 'http://localhost:3000/',
           variables: {
             defaultHost: {
-              default: ' http://localhost:3000'
+              default: 'http://localhost:3000/'
             }
           }
         }
       ]
     }
   }
+
 
   # Specify the format of the output Swagger file when running 'rswag:specs:swaggerize'.
   # The swagger_docs configuration option has the filename including format in

@@ -11,9 +11,10 @@ module Api
       def available_books
         @books = Book.where(status: :in_library)
         if @books.present?
-          @books
+          @book
         else
-          render json: 'No available books', status: :unprocessable_entity
+          @message = 'No available books'
+          render 'api/v1/books/fail'
         end
       end
 
@@ -22,7 +23,8 @@ module Api
         if @books.present?
           @books
         else
-          render json: "We don't have expired books"
+          @message = "We don't have expired books"
+          render 'fail'
         end
       end
 
@@ -35,7 +37,8 @@ module Api
         if @book.present?
           @book
         else
-          render json: "You don't have reserved books", status: :unprocessable_entity
+          @message = "You don't have reserved books"
+          render 'fail'
         end
       end
 
@@ -44,7 +47,8 @@ module Api
         if @books.present?
           @books
         else
-          render json: "Library doesn't have your books"
+          @message = "Library doesn't have your books"
+          render 'fail'
         end
       end
 
@@ -60,7 +64,8 @@ module Api
 
       def reserve
         if Book.find_by('reader_user_id' => @user.id)
-          render json: 'You already have book. Only one book can be taken', status: :unprocessable_entity
+          @message = 'You already have book. Only one book can be taken'
+          render 'fail'
         else
           @book = Book.find_by('id' => params[:id])
           if @book.present?
@@ -69,10 +74,12 @@ module Api
               @book.save
               UserMailer.with(book: @book).book_reserved.deliver_now
             else
-              render json: 'Someone has already taken this book', status: :unprocessable_entity
+              @message = 'Someone has already taken this book'
+              render 'fail'
             end
           else
-            render json: "Book doesn't exist", status: :unprocessable_entity
+            @message = "Book doesn't exist"
+            render 'fail'
           end
         end
       end
@@ -83,7 +90,8 @@ module Api
           UserMailer.with(book: @book).return.deliver_now
           @book.update(status: :in_library, reader_user_id: nil, dead_line: nil)
         else
-          render json: "You don't have this book", status: :unprocessable_entity
+          @message = "You don't have this book"
+          render 'fail'
         end
       end
 
@@ -92,17 +100,20 @@ module Api
         if @book.present?
           if @book.reader_user_id.present?
             UserMailer.with(book: @book).return_to_owner.deliver_now
-            render json: 'Request to the reader was sent'
+            @message = 'Request to the reader was sent'
+            render 'fail'
           else
             if @book.status == 'picked_up'
-              render json: 'You already took your book'
+              @message = 'You already took your book'
+              render 'fail'
             else
               UserMailer.with(book: @book).returned.deliver_now
               @book.update(status: :picked_up)
             end
           end
         else
-          render json: "It's not your book"
+          @message = "It's not your book"
+          render 'fail'
         end
       end
 
