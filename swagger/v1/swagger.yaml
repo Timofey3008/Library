@@ -1,0 +1,262 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+paths:
+  "/api/v1/books":
+    get:
+      summary: List of books
+      tags:
+      - Books
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: successful
+          content: {}
+        '401':
+          description: authentication failed
+          content: {}
+    post:
+      summary: Registration of the book
+      tags:
+      - Books
+      security:
+      - bearerAuth: []
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content: {}
+        '401':
+          description: authentication failed
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+              - name
+  "/api/v1/books/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Show book
+      tags:
+      - Books
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: successful
+          content: {}
+        '401':
+          description: authentication failed
+          content: {}
+  "/api/v1/books/reserve/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Reserve book
+      tags:
+      - Books
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: successful
+          content: {}
+        '401':
+          description: authentication failed
+          content: {}
+  "/api/v1/books/return/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Return book
+      tags:
+      - Books
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: successful
+          content: {}
+        '401':
+          description: authentication failed
+          content: {}
+  "/api/v1/book/user_read":
+    get:
+      summary: Show book which user read
+      tags:
+      - Books
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: successful
+          content: {}
+        '401':
+          description: authentication failed
+          content: {}
+  "/api/v1/book/own_books":
+    get:
+      summary: Show own books
+      tags:
+      - Books
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: successful
+          content: {}
+        '401':
+          description: authentication failed
+          content: {}
+  "/api/v1/book/available_books":
+    get:
+      summary: Show available books
+      tags:
+      - Books
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: successful
+          content: {}
+        '401':
+          description: authentication failed
+          content: {}
+  "/api/v1/book/return_to_owner/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Return book to owner
+      tags:
+      - Books
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: successful
+          content: {}
+        '401':
+          description: authentication failed
+          content: {}
+  "/api/v1/book/expired":
+    get:
+      summary: Show expired books
+      tags:
+      - Books
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: successful
+          content: {}
+        '401':
+          description: authentication failed
+          content: {}
+  "/api/v1/users":
+    get:
+      summary: Show list of users
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+          content: {}
+    post:
+      summary: Registration of user
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: created
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mail:
+                  type: string
+                password:
+                  type: string
+              required:
+              - mail
+              - password
+  "/api/v1/users/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Show user
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+          content: {}
+  "/api/v1/login":
+    post:
+      summary: Login
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mail:
+                  type: string
+                password:
+                  type: string
+              required:
+              - mail
+              - password
+servers:
+- url: http://localhost:3000/
+  variables:
+    defaultHost:
+      default: http://localhost:3000/
