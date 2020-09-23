@@ -32,10 +32,10 @@ RSpec.configure do |config|
           paths: {},
           servers: [
               {
-                  url: 'http://localhost:3000/',
+                  url: ENV['URL'],
                   variables: {
                       defaultHost: {
-                          default: 'http://localhost:3000/'
+                          default: ENV['URL']
                       }
                   }
               }
