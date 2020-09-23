@@ -1,5 +1,5 @@
 class UserMailer < ApplicationMailer
-  default to: 'tim148@mail.ru',
+  default to: 'library.ruby.test@gmail.com',
           from: 'notifications@example.com'
 
   def welcome_email
