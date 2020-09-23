@@ -5,6 +5,7 @@ RSpec.describe 'api/v1/users', type: :request do
 
     get('Show list of users') do
       tags "Users"
+      security [ bearerAuth: [] ]
       response(200, 'successful') do
 
         after do |example|
@@ -42,6 +43,7 @@ RSpec.describe 'api/v1/users', type: :request do
 
     get('Show user') do
       tags "Users"
+      security [ bearerAuth: [] ]
       response(200, 'successful') do
         let(:id) { '123' }
 
