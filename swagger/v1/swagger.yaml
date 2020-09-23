@@ -190,6 +190,8 @@ paths:
       summary: Show list of users
       tags:
       - Users
+      security:
+      - bearerAuth: []
       responses:
         '200':
           description: successful
@@ -228,6 +230,8 @@ paths:
       summary: Show user
       tags:
       - Users
+      security:
+      - bearerAuth: []
       responses:
         '200':
           description: successful
