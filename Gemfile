@@ -17,9 +17,11 @@ gem 'whenever', require: false
 gem 'resque'
 #gem 'resue-scheduler'
 
-gem 'rswag'#, git: 'https://github.com/rswag/rswag.git'
+
 
 gem 'rswag-ui'
+
+
 
 gem 'jbuilder', '~> 2.5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -43,6 +45,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem "rspec-rails"
   gem "rswag-specs"
+  gem 'rswag'#, git: 'https://github.com/rswag/rswag.git'
 end
 
 group :development do
