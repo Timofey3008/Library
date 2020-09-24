@@ -6,7 +6,7 @@ module Api
       before_action :authenticate, only: [:index, :show]
 
       def index
-        if @user.mail == 'tim1584569@mail.ru'
+        if @user.mail == ENV['moderator_mail']
           @user = User.all
         else
           @message = "You don't have access"
@@ -15,7 +15,7 @@ module Api
       end
 
       def show
-        if @user.mail == 'tim1584569@mail.ru'
+        if @user.mail == ENV['moderator_mail']
           @user = User.find(params[:id])
         else
           @message = "You don't have access"
