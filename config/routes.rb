@@ -8,12 +8,12 @@ Rails.application.routes.draw do
       resources :books
       resources :users
       post 'login', to: 'users#login'
-      post 'books/reserve/:id', to: 'books#reserve'
-      post 'books/return/:id', to: 'books#return'
+      put 'books/reserve/:id', to: 'books#reserve'
+      put 'books/return/:id', to: 'books#return'
       get 'book/user_read', to: 'books#user_read'
       get 'book/own_books', to: 'books#own_books'
       get 'book/available_books', to: 'books#available_books'
-      post 'book/return_to_owner/:id', to: 'books#return_to_owner'
+      put 'book/return_to_owner/:id', to: 'books#return_to_owner'
       get 'book/expired', to: 'books#expired'
     end
   end

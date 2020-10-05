@@ -71,7 +71,7 @@ RSpec.describe 'api/v1/books', type: :request do
     # You'll want to customize the parameter types...
     parameter name: 'id', in: :path, type: :string
 
-    post('Reserve book') do
+    put('Reserve book') do
       tags "Books"
       security [ bearerAuth: [] ]
       response(200, 'successful') do
@@ -93,7 +93,7 @@ RSpec.describe 'api/v1/books', type: :request do
     # You'll want to customize the parameter types...
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
-    post('Return book') do
+    put('Return book') do
       tags "Books"
       security [ bearerAuth: [] ]
       response(200, 'successful') do
@@ -172,7 +172,7 @@ RSpec.describe 'api/v1/books', type: :request do
     # You'll want to customize the parameter types...
     parameter name: 'id', in: :path, type: :string, description: 'id'
 
-    post('Return book to owner') do
+    put('Return book to owner') do
       tags "Books"
       security [ bearerAuth: [] ]
       response(200, 'successful') do
