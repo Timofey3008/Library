@@ -14,7 +14,7 @@ module Api
           @book
         else
           @message = 'No available books'
-          render 'api/v1/books/fail'
+          render 'api/v1/books/fail', status: :precondition_failed
         end
       end
 
@@ -24,7 +24,7 @@ module Api
           @books
         else
           @message = "We don't have expired books"
-          render 'fail'
+          render 'fail', status: :precondition_failed
         end
       end
 
@@ -38,7 +38,7 @@ module Api
           @book
         else
           @message = "You don't have reserved books"
-          render 'fail'
+          render 'fail', status: :precondition_failed
         end
       end
 
@@ -48,7 +48,7 @@ module Api
           @books
         else
           @message = "Library doesn't have your books"
-          render 'fail'
+          render 'fail', status: :precondition_failed
         end
       end
 
@@ -65,7 +65,7 @@ module Api
       def reserve
         if Book.find_by('reader_user_id' => @user.id)
           @message = 'You already have book. Only one book can be taken'
-          render 'fail'
+          render 'fail', status: :precondition_failed
         else
           @book = Book.find_by('id' => params[:id])
           if @book.present?
@@ -75,11 +75,11 @@ module Api
               UserMailer.with(book: @book).book_reserved.deliver_now
             else
               @message = 'Someone has already taken this book'
-              render 'fail'
+              render 'fail', status: :precondition_failed
             end
           else
             @message = "Book doesn't exist"
-            render 'fail'
+            render 'fail', status: :precondition_failed
           end
         end
       end
@@ -91,7 +91,7 @@ module Api
           @book.update(status: :in_library, reader_user_id: nil, dead_line: nil)
         else
           @message = "You don't have this book"
-          render 'fail'
+          render 'fail', status: :precondition_failed
         end
       end
 
@@ -101,11 +101,11 @@ module Api
           if @book.reader_user_id.present?
             UserMailer.with(book: @book).return_to_owner.deliver_now
             @message = 'Request to the reader was sent'
-            render 'fail'
+            render 'fail', status: :precondition_failed
           else
             if @book.status == 'picked_up'
               @message = 'You already took your book'
-              render 'fail'
+              render 'fail', status: :precondition_failed
             else
               UserMailer.with(book: @book).returned.deliver_now
               @book.update(status: :picked_up)
@@ -113,7 +113,7 @@ module Api
           end
         else
           @message = "It's not your book"
-          render 'fail'
+          render 'fail', status: :precondition_failed
         end
       end
 

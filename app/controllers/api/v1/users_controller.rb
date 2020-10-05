@@ -10,7 +10,7 @@ module Api
           @user = User.all
         else
           @message = "You don't have access"
-          render 'access'
+          render 'access', status: :forbidden
         end
       end
 
@@ -19,7 +19,7 @@ module Api
           @user = User.find(params[:id])
         else
           @message = "You don't have access"
-          render 'access'
+          render 'access', status: :forbidden
         end
       end
 
@@ -32,11 +32,11 @@ module Api
             @user
           else
             @message = 'Incorrect credentials'
-            render 'fail'
+            render 'fail', status: :precondition_failed
           end
         else
           @message = 'Incorrect credentials'
-          render 'fail'
+          render 'fail', status: :precondition_failed
         end
       end
 
