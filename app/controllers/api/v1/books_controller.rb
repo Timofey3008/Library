@@ -29,7 +29,11 @@ module Api
       end
 
       def show
-        @book = Book.find(params[:id])
+        @book = Book.find_by(id: params[:id])
+        unless @book.present?
+          @message = 'Incorrect book id'
+          render 'fail', status: :precondition_failed
+        end
       end
 
       def user_read
