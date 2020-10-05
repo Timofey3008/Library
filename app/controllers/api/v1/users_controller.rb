@@ -32,11 +32,11 @@ module Api
             @user
           else
             @message = 'Incorrect credentials'
-            render 'fail', status: :precondition_failed
+            render 'api/v1/books/fail', status: :precondition_failed
           end
         else
           @message = 'Incorrect credentials'
-          render 'fail', status: :precondition_failed
+          render 'api/v1/books/fail', status: :precondition_failed
         end
       end
 
