@@ -6,20 +6,24 @@ module Api
       before_action :authenticate, only: [:index, :show]
 
       def index
-        if @user.mail == ENV['moderator_mail']
-          @user = User.all
+        if @user.mail == 'tim148@mail.ru'
+          @users = User.all
         else
-          @message = "You don't have access"
-          render 'access', status: :forbidden
+          @message = "You aren't moderator"
+          render 'api/v1/books/access', status: :forbidden
         end
       end
 
       def show
-        if @user.mail == ENV['moderator_mail']
-          @user = User.find(params[:id])
+        if @user.mail == 'tim148@mail.ru'
+          @user = User.find_by(id: params[:id])
+          unless @user.present?
+            @message = 'Incorrect user id'
+            render 'api/v1/books/fail', status: :precondition_failed
+          end
         else
-          @message = "You don't have access"
-          render 'access', status: :forbidden
+          @message = "You aren't moderator"
+          render 'api/v1/books/access', status: :forbidden
         end
       end
 
@@ -47,7 +51,8 @@ module Api
           UserMailer.with(user: @user).welcome_email.deliver_now
           render status: :created
         else
-          render json: @user.errors, status: :unprocessable_entity
+          @message = @user.errors
+          render 'api/v1/books/fail', status: :precondition_failed
         end
       end
 

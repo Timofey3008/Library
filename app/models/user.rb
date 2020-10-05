@@ -3,7 +3,7 @@ class User < ApplicationRecord
   # has_many :reserveds
   # has_many :books, through: :reserveds
 
-  validates :mail, presence: true, uniqueness: true
+  validates :mail, format: { with: URI::MailTo::EMAIL_REGEXP }, presence: true, uniqueness: true
   validates :password, presence: true
 
   before_create -> {self.token = generate_token}
