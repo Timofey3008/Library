@@ -106,7 +106,7 @@ module Api
       def return_to_owner
         @book = Book.find_by(id: params[:id], owner_id: @user.id)
         if @book.present?
-          if @book.reader_user_id.present?
+          if @book.reader_user_id.present? and @book.reader_user_id != @user.id
             UserMailer.with(book: @book).return_to_owner.deliver_now
             @message = 'Request to the reader was sent'
             render 'api/v1/success', status: :ok
