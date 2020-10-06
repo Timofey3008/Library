@@ -19,7 +19,7 @@ module Api
           @user = User.find_by(id: params[:id])
           unless @user.present?
             @message = 'Incorrect user id'
-            render 'api/v1/books/fail', status: :precondition_failed
+            render 'api/v1/books/fail', status: :bad_request
           end
         else
           @message = "You aren't moderator"
@@ -36,23 +36,22 @@ module Api
             @user
           else
             @message = 'Incorrect credentials'
-            render 'api/v1/books/fail', status: :precondition_failed
+            render 'api/v1/books/fail', status: :bad_request
           end
         else
           @message = 'Incorrect credentials'
-          render 'api/v1/books/fail', status: :precondition_failed
+          render 'api/v1/books/fail', status: :bad_request
         end
       end
 
       def create
         @user = User.new(user_params)
-
         if @user.save
           UserMailer.with(user: @user).welcome_email.deliver_now
           render status: :created
         else
           @message = @user.errors
-          render 'api/v1/books/fail', status: :precondition_failed
+          render 'api/v1/books/fail', status: :bad_request
         end
       end
 
@@ -65,8 +64,6 @@ module Api
       def decrypt
         BCrypt::Password.new(@user.password)
       end
-
-
     end
   end
 end
