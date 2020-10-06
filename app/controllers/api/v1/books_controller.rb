@@ -116,7 +116,7 @@ module Api
               render 'fail', status: :bad_request
             else
               UserMailer.with(book: @book).returned.deliver_now
-              @book.update(status: :picked_up)
+              @book.update(status: :picked_up, reader_user_id: nil, dead_line: nil)
             end
           end
         else
