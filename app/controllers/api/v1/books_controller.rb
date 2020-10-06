@@ -6,7 +6,7 @@ module Api
 
       def index
         @books = Book.all
-        unless @book.present?
+        unless @books.present?
           @message = "Library doesn't have books"
           render 'api/v1/success', status: :ok
         end
