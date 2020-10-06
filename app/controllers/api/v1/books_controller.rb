@@ -15,7 +15,7 @@ module Api
       def available_books
         @books = Book.where(status: :in_library)
         if @books.present?
-          @book
+          @books
         else
           @message = 'No available books'
           render 'api/v1/books/access', status: :ok
