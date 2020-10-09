@@ -7,51 +7,39 @@ module Api
 
       def index
         if @user.mail == 'tim148@mail.ru'
-          @users = User.all
+          service_result = PaginateService.build(Book, limit: params[:limit], page: params[:page]).call
+          if service_result.success?
+            render_success(data: service_result.data)
+          else
+            render_error(data: service_result.message)
+          end
         else
-          @message = "You aren't moderator"
-          render 'api/v1/books/access', status: :forbidden
+          render_forbidden(data: "User is not moderator")
         end
       end
 
       def show
-        if @user.mail == 'tim148@mail.ru'
-          @user = User.find_by(id: params[:id])
-          unless @user.present?
-            @message = 'Incorrect user id'
-            render 'api/v1/books/fail', status: :bad_request
-          end
-        else
-          @message = "You aren't moderator"
-          render 'api/v1/books/access', status: :forbidden
-        end
+
+        render_forbidden(data: "User is not moderator")if @user.mail != 'tim148@mail.ru'
+        render_success(data: User.find_by(id: params[:id])) if @user.mail == 'tim148@mail.ru'
       end
 
       def login
-        @user = User
-                    .select('password, token')
-                    .find_by('mail' => params.require(:user).require(:mail))
-        if @user.present?
-          if decrypt == params.require(:user).require(:password)
-            @user
-          else
-            @message = 'Incorrect credentials'
-            render 'api/v1/books/fail', status: :bad_request
-          end
+
+        service_result = LoginService.new(User, params).call
+        if service_result.success?
+          render_success(data: service_result.data)
         else
-          @message = 'Incorrect credentials'
-          render 'api/v1/books/fail', status: :bad_request
+          render_error(data: service_result.message)
         end
       end
 
       def create
-        @user = User.new(user_params)
-        if @user.save
-          UserMailer.with(user: @user).welcome_email.deliver_now
-          render status: :created
+        @service_result = UserCreateService.new(User, user_params).call
+        if @service_result.success?
+          @service_result.data
         else
-          @message = @user.errors
-          render 'api/v1/books/fail', status: :bad_request
+          render_error(data: @service_result.message)
         end
       end
 
@@ -59,10 +47,6 @@ module Api
 
       def user_params
         params.require(:user).permit(:mail, :password)
-      end
-
-      def decrypt
-        BCrypt::Password.new(@user.password)
       end
     end
   end

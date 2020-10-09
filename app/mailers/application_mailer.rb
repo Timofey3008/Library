@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'from@example.com'
+  default from: 'from@paginate_service.rb.com'
   layout 'mailer'
 end

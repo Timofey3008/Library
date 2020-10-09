@@ -5,123 +5,83 @@ module Api
       before_action :authenticate
 
       def index
-        @books = Book.all
-        unless @books.present?
-          @message = "Library doesn't have books"
-          render 'api/v1/success', status: :ok
+
+        service_result = PaginateService.build(Book, limit: params[:limit], page: params[:page]).call
+        if service_result.success?
+          render_success(data: service_result.data)
+        else
+          render_error(data: service_result.message)
         end
       end
 
       def available_books
-        @books = Book.where(status: :in_library)
-        if @books.present?
-          @books
+
+        service_result = PaginateService.build(Book.in_library, limit: params[:limit], page: params[:page]).call
+        if service_result.success?
+          render_success(data: service_result.data)
         else
-          @message = 'No available books'
-          render 'api/v1/books/access', status: :ok
+          render_error(data: service_result.message)
         end
       end
 
       def expired
-        @books = Book.where("dead_line < ?", Time.now.to_date)
-        if @books.present?
-          @books
+
+        service_result = PaginateService.build(Book.where("dead_line < ?", Time.now.to_date), limit: params[:limit], page: params[:page]).call
+        if service_result.success?
+          render_success(data: service_result.data)
         else
-          @message = "We don't have expired books"
-          render 'api/v1/success', status: :ok
+          render_error(data: service_result.message)
         end
       end
 
       def show
-        @book = Book.find_by(id: params[:id])
-        unless @book.present?
-          @message = 'Incorrect book id'
-          render 'fail', status: :bad_request
-        end
+        render_success(data: Book.find_by(id: params[:id]))
       end
 
       def user_read
-        @book = Book.find_by(reader_user_id: @user.id, status: :reserved)
-        if @book.present?
-          @book
-        else
-          @message = "You don't have reserved books"
-          render 'api/v1/success', status: :ok
-        end
+        render_success(data: Book.find_by(reader_user_id: @user.id, status: :reserved))
       end
 
       def own_books
-        @books = Book.where(owner_id: @user.id)
-        if @books.present?
-          @books
-        else
-          @message = "Library doesn't have your books"
-          render 'api/v1/success', status: :ok
-        end
+        render_success(data: Book.where(owner_id: @user.id))
       end
 
       def create
-        @book = @user.books.new(book_name)
-        if @book.save
-          UserMailer.with(book: @book, user: @user).book_registration.deliver_now
-          render status: :created
+
+        service_result = BookCreateService.new(@user, book_name).call
+        if service_result.success?
+          render_created_book(data: service_result.data)
         else
-          render json: @book.errors, status: :unprocessable_entity
+          render_error(data: service_result.message)
         end
       end
 
       def reserve
-        if Book.find_by('reader_user_id' => @user.id)
-          @message = 'You already have book. Only one book can be taken'
-          render 'fail', status: :bad_request
+
+        service_result = BookReserveService.new(Book, @user, params[:id]).call
+        if service_result.success?
+          render_success(data: service_result.data)
         else
-          @book = Book.find_by('id' => params[:id])
-          if @book.present?
-            if @book.in_library?
-              @book.update(status: :reserved, reader_user_id: @user.id, dead_line: DateTime.now + 1.months)
-              @book.save
-              UserMailer.with(book: @book).book_reserved.deliver_now
-            else
-              @message = 'Someone has already taken this book'
-              render 'fail', status: :bad_request
-            end
-          else
-            @message = "Book doesn't exist"
-            render 'fail', status: :bad_request
-          end
+          render_error(data: service_result.message)
         end
       end
 
       def return
-        @book = Book.find_by(id: params[:id], reader_user_id: @user.id)
-        if @book.present?
-          UserMailer.with(book: @book).return.deliver_now
-          @book.update(status: :in_library, reader_user_id: nil, dead_line: nil)
+        service_result = BookReturnService.new(Book, @user, params[:id]).call
+        if service_result.success?
+          render_success(data: service_result.data)
         else
-          @message = "You don't have this book"
-          render 'fail', status: :bad_request
+          render_error(data: service_result.message)
         end
       end
 
       def return_to_owner
-        @book = Book.find_by(id: params[:id], owner_id: @user.id)
-        if @book.present?
-          if @book.reader_user_id.present? and @book.reader_user_id != @user.id
-            UserMailer.with(book: @book).return_to_owner.deliver_now
-            @message = 'Request to the reader was sent'
-            render 'api/v1/success', status: :ok
-          else
-            if @book.status == 'picked_up'
-              @message = 'You already took your book'
-              render 'fail', status: :bad_request
-            else
-              UserMailer.with(book: @book).returned.deliver_now
-              @book.update(status: :picked_up, reader_user_id: nil, dead_line: nil)
-            end
-          end
+
+        service_result = ReturnToOwnerService.new(Book, @user, params[:id]).call
+        if service_result.success?
+          render_success(data: service_result.data)
         else
-          @message = "It's not your book"
-          render 'fail', status: :bad_request
+          render_error(data: service_result.message)
         end
       end
 

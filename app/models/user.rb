@@ -9,6 +9,10 @@ class User < ApplicationRecord
   before_create -> {self.token = generate_token}
   before_create :hash_password
 
+  def read_book
+    Book.find_by(reader_user_id: id)
+  end
+
   private
 
   def generate_token

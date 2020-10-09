@@ -2,7 +2,7 @@
 
 # ActiveSupport::Reloader.to_prepare do
 #   ApplicationController.renderer.defaults.merge!(
-#     http_host: 'example.org',
+#     http_host: 'paginate_service.rb.org',
 #     https: false
 #   )
 # end

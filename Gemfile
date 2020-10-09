@@ -14,6 +14,11 @@ gem 'puma', '~> 4.1'
 
 gem 'bcrypt'
 
+gem 'kaminari'
+gem 'pager_api'
+gem 'active_model_serializers'
+gem 'pagy'
+
 gem 'whenever', require: false
 
 gem 'resque'
