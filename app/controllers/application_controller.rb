@@ -22,7 +22,7 @@ class ApplicationController < ActionController::API
   end
 
   def error_message
-    {code: 401, status: 'Unauthorized', data: {message: "Unauthorized access in the API"}}.to_json
+    {code: 401, status: 'Unauthorized', data: "Unauthorized access in the API"}.to_json
   end
 
   def authenticate

@@ -1,0 +1,16 @@
+[
+  {
+    "code": 200,
+    "status": "OK",
+    "data": [
+      "id": "integer",
+      "name": "string",
+      "owner_id": "integer",
+      "created_at": "date",
+      "updated_at": "date",
+      "status": "string",
+      "dead_line": "date",
+      "reader_user_id": "integer"
+      ]
+  }
+]

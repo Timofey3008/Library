@@ -1,12 +1,27 @@
 require 'swagger_helper'
 
 RSpec.describe 'api/v1/books', type: :request do
-
-  path '/api/v1/books' do
+  include ActiveJob::TestHelper
+  path '/api/v1/books/' do
     get('List of books') do
       tags "Books"
       security [ bearerAuth: [] ]
+      parameter(
+          name: 'limit',
+          in: :query,
+          type: :integer,
+          description: 'Count of books on the page'
+      )
+      parameter(
+          name: 'page',
+          in: :query,
+          type: :integer,
+          description: 'Page number'
+      )
+
       response(200, 'successful') do
+
+        #examples(add_example('spec/examples/books/index'))
 
         after do |example|
           example.metadata[:response][:examples] = { 'application/json' => JSON.parse(response.body, symbolize_names: true) }
@@ -38,6 +53,11 @@ RSpec.describe 'api/v1/books', type: :request do
         end
         run_test!
       end
+      # response '201', 'blog created' do
+      #   #examples(load_examples('application/json', 'v1/examples/campaigns/page_views_data'))
+      #   #schema '$ref' => '#/components/schemas/blog'
+      #   run_test!
+      # end
       response '401', 'authentication failed' do
         let(:Authorization) { "Basic #{::Base64.strict_encode64('bogus:bogus')}" }
         run_test!
@@ -154,6 +174,19 @@ RSpec.describe 'api/v1/books', type: :request do
     get('Show available books') do
       tags "Books"
       security [ bearerAuth: [] ]
+      parameter(
+          name: 'limit',
+          in: :query,
+          type: :integer,
+          description: 'Count of books on the page'
+      )
+      parameter(
+          name: 'page',
+          in: :query,
+          type: :integer,
+          description: 'Page number'
+      )
+
       response(200, 'successful') do
 
         after do |example|
@@ -195,6 +228,19 @@ RSpec.describe 'api/v1/books', type: :request do
     get('Show expired books') do
       tags "Books"
       security [ bearerAuth: [] ]
+      parameter(
+          name: 'limit',
+          in: :query,
+          type: :integer,
+          description: 'Count of books on the page'
+      )
+      parameter(
+          name: 'page',
+          in: :query,
+          type: :integer,
+          description: 'Page number'
+      )
+
       response(200, 'successful') do
 
         after do |example|

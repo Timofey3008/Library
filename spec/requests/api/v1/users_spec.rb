@@ -6,6 +6,19 @@ RSpec.describe 'api/v1/users', type: :request do
     get('Show list of users') do
       tags "Users"
       security [ bearerAuth: [] ]
+      parameter(
+          name: 'limit',
+          in: :query,
+          type: :integer,
+          description: 'Count of users on the page'
+      )
+      parameter(
+          name: 'page',
+          in: :query,
+          type: :integer,
+          description: 'Page number'
+      )
+
       response(200, 'successful') do
 
         after do |example|

@@ -27,6 +27,35 @@ RSpec.configure do |config|
                       type: :http,
                       scheme: :bearer
                   },
+              },
+              schemas: {
+                  errors_object: {
+                      type: 'object',
+                      properties: {
+                          errors: { '$ref' => '#/components/schemas/errors_map' }
+                      }
+                  },
+                  errors_map: {
+                      type: 'object',
+                      properties: {
+                          code: {type: 'integer'},
+                          status: {type: 'string'},
+                      additionalProperties: {
+                          type: 'array',
+                          items: { type: 'string' }
+                      }
+                      }
+                  },
+                  blog: {
+                      type: 'object',
+                      properties: {
+                          id: { type: 'integer' },
+                          title: { type: 'string' },
+                          content: { type: 'string', nullable: true },
+                          thumbnail: { type: 'string', nullable: true }
+                      },
+                      required: %w[id title]
+                  },
               }
           },
           paths: {},
