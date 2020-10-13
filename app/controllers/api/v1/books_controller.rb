@@ -50,7 +50,7 @@ module Api
 
         service_result = BookCreateService.new(@user, book_name).call
         if service_result.success?
-          render_created_book(data: service_result.data)
+          render_created(data: service_result.data)
         else
           render_error(data: service_result.message)
         end

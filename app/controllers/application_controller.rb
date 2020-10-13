@@ -17,10 +17,6 @@ class ApplicationController < ActionController::API
     render json: {code: code, status: status, data: data}, status: :created
   end
 
-  def render_created_book(code: 201, status: 'Created', data:[])
-    render json: {code: code, status: status, data: data}, status: :created
-  end
-
   def error_message
     {code: 401, status: 'Unauthorized', data: "Unauthorized access in the API"}.to_json
   end

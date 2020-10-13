@@ -13,6 +13,14 @@ class User < ApplicationRecord
     Book.find_by(reader_user_id: id)
   end
 
+  # def user_attributes
+  #   User.attributes.except('token', 'created_at', 'updated_at', 'password')
+  # end
+
+  def user_attributes
+    self.attributes.except('token', 'created_at', 'updated_at', 'password')
+  end
+
   private
 
   def generate_token

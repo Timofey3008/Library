@@ -16,11 +16,11 @@ components:
           type: integer
           example: 401
         status:
-            type: string
-            example: Unauthorized
+          type: string
+          example: Unauthorized
         data:
-            type: string
-            example: Unauthorized access in the API
+          type: string
+          example: Unauthorized access in the API
     book_created:
       type: object
       properties:
@@ -31,27 +31,53 @@ components:
           type: string
           example: Created
         data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-              name:
-                type: string
-              owner_id:
-                type: integer
-              created_at:
-                type: string
-              updated_at:
-                type: string
-              status:
-                type: string
-              dead_line:
-                type: string
-              reader_user_id:
-                type: integer
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            owner_id:
+              type: integer
+            created_at:
+              type: string
+            updated_at:
+              type: string
+            status:
+              type: string
+            dead_line:
+              type: string
+            reader_user_id:
+              type: integer
     book_successful:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 200
+        status:
+          type: string
+          example: OK
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            owner_id:
+              type: integer
+            created_at:
+              type: string
+            updated_at:
+              type: string
+            status:
+              type: string
+            dead_line:
+              type: string
+            reader_user_id:
+              type: integer
+    books_successful:
       type: object
       properties:
         code:
@@ -103,16 +129,14 @@ components:
           type: string
           example: Created
         data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-              mail:
-                type: string
-              token:
-                type: string
+          type: object
+          properties:
+            id:
+              type: integer
+            mail:
+              type: string
+            token:
+              type: string
     users:
       type: object
       properties:
@@ -131,34 +155,48 @@ components:
                 type: integer
               mail:
                 type: string
-              token:
-                type: string
+    user:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 200
+        status:
+          type: string
+          example: OK
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+            mail:
+              type: string
 paths:
   "/api/v1/books/":
     get:
       summary: List of books
       tags:
-      - Books
+        - Books
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: limit
-        in: query
-        description: Count of books on the page
-        schema:
-          type: integer
-      - name: page
-        in: query
-        description: Page number
-        schema:
-          type: integer
+        - name: limit
+          in: query
+          description: Count of books on the page
+          schema:
+            type: integer
+        - name: page
+          in: query
+          description: Page number
+          schema:
+            type: integer
       responses:
         '200':
           description: Successful
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/book_successful'
+                $ref: '#/components/schemas/books_successful'
         '401':
           description: Unauthorized
           content:
@@ -168,9 +206,9 @@ paths:
     post:
       summary: Registration of the book
       tags:
-      - Books
+        - Books
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters: []
       responses:
         '201':
@@ -178,7 +216,7 @@ paths:
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/book_created'
+                $ref: '#/components/schemas/book_created'
 
         '401':
           description: Unauthorized
@@ -195,20 +233,20 @@ paths:
                 name:
                   type: string
               required:
-              - name
+                - name
   "/api/v1/books/{id}":
     parameters:
-    - name: id
-      in: path
-      required: true
-      schema:
-        type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
     get:
       summary: Show book
       tags:
-      - Books
+        - Books
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       responses:
         '200':
           description: Successful
@@ -224,17 +262,17 @@ paths:
                 $ref: '#/components/schemas/unauthorized'
   "/api/v1/books/reserve/{id}":
     parameters:
-    - name: id
-      in: path
-      required: true
-      schema:
-        type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
     put:
       summary: Reserve book
       tags:
-      - Books
+        - Books
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       responses:
         '200':
           description: Successful
@@ -250,18 +288,18 @@ paths:
                 $ref: '#/components/schemas/unauthorized'
   "/api/v1/books/return/{id}":
     parameters:
-    - name: id
-      in: path
-      description: id
-      required: true
-      schema:
-        type: string
+      - name: id
+        in: path
+        description: id
+        required: true
+        schema:
+          type: string
     put:
       summary: Return book
       tags:
-      - Books
+        - Books
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       responses:
         '200':
           description: Successful
@@ -279,9 +317,9 @@ paths:
     get:
       summary: Show book which user read
       tags:
-      - Books
+        - Books
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       responses:
         '200':
           description: Successful
@@ -299,16 +337,16 @@ paths:
     get:
       summary: Show own books
       tags:
-      - Books
+        - Books
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       responses:
         '200':
           description: Successful
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/book_successful'
+                $ref: '#/components/schemas/books_successful'
         '401':
           description: Unauthorized
           content:
@@ -319,20 +357,47 @@ paths:
     get:
       summary: Show available books
       tags:
-      - Books
+        - Books
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: limit
-        in: query
-        description: Count of books on the page
+        - name: limit
+          in: query
+          description: Count of books on the page
+          schema:
+            type: integer
+        - name: page
+          in: query
+          description: Page number
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/books_successful'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unauthorized'
+  "/api/v1/book/return_to_owner/{id}":
+    parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
         schema:
-          type: integer
-      - name: page
-        in: query
-        description: Page number
-        schema:
-          type: integer
+          type: string
+    put:
+      summary: Return book to owner
+      tags:
+        - Books
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Successful
@@ -346,58 +411,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/unauthorized'
-  "/api/v1/book/return_to_owner/{id}":
-    parameters:
-    - name: id
-      in: path
-      description: id
-      required: true
-      schema:
-        type: string
-    put:
-      summary: Return book to owner
-      tags:
-      - Books
-      security:
-      - bearerAuth: []
-      responses:
-        '200':
-          description: Successful
-          content:
-            application/json:
-              schema:
-                 $ref: '#/components/schemas/book_successful'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/unauthorized'
   "/api/v1/book/expired":
     get:
       summary: Show expired books
       tags:
-      - Books
+        - Books
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: limit
-        in: query
-        description: Count of books on the page
-        schema:
-          type: integer
-      - name: page
-        in: query
-        description: Page number
-        schema:
-          type: integer
+        - name: limit
+          in: query
+          description: Count of books on the page
+          schema:
+            type: integer
+        - name: page
+          in: query
+          description: Page number
+          schema:
+            type: integer
       responses:
         '200':
           description: Successful
           content:
             application/json:
               schema:
-                 $ref: '#/components/schemas/book_successful'
+                $ref: '#/components/schemas/books_successful'
         '401':
           description: Unauthorized
           content:
@@ -408,20 +446,20 @@ paths:
     get:
       summary: Show list of users
       tags:
-      - Users
+        - Users
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: limit
-        in: query
-        description: Count of users on the page
-        schema:
-          type: integer
-      - name: page
-        in: query
-        description: Page number
-        schema:
-          type: integer
+        - name: limit
+          in: query
+          description: Count of users on the page
+          schema:
+            type: integer
+        - name: page
+          in: query
+          description: Page number
+          schema:
+            type: integer
       responses:
         '200':
           description: successful
@@ -444,7 +482,7 @@ paths:
     post:
       summary: Registration of user
       tags:
-      - Users
+        - Users
       parameters: []
       responses:
         '201':
@@ -464,29 +502,29 @@ paths:
                 password:
                   type: string
               required:
-              - mail
-              - password
+                - mail
+                - password
   "/api/v1/users/{id}":
     parameters:
-    - name: id
-      in: path
-      description: id
-      required: true
-      schema:
-        type: string
+      - name: id
+        in: path
+        description: id
+        required: true
+        schema:
+          type: string
     get:
       summary: Show user
       tags:
-      - Users
+        - Users
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       responses:
         '200':
           description: Successful
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/users'
+                $ref: '#/components/schemas/user'
         '401':
           description: Unauthorized
           content:
@@ -503,7 +541,7 @@ paths:
     post:
       summary: Login
       tags:
-      - Users
+        - Users
       parameters: []
       responses:
         '200':
@@ -548,10 +586,10 @@ paths:
                 password:
                   type: string
               required:
-              - mail
-              - password
+                - mail
+                - password
 servers:
-- url: https://powerful-citadel-31931.herokuapp.com
-  variables:
-    defaultHost:
-      default: https://powerful-citadel-31931.herokuapp.com
+  - url: http://localhost:3000
+    variables:
+      defaultHost:
+        default: http://localhost:3000

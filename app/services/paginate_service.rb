@@ -17,7 +17,7 @@ class PaginateService
 
     return ServiceResult.new(status: false, message: "Page can't be less than 1") if @page <= 0
 
-    @model = @model.limit(@limit).offset((@page - 1) * @limit).order(:name)
+    @model = @model.limit(@limit).offset((@page - 1) * @limit).order(:id)
     ServiceResult.new(status: true, message: "Service Complete", data: @model.to_a)
 
 
