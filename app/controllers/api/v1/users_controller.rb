@@ -36,7 +36,7 @@ module Api
       def create
         service_result = UserCreateService.new(User, user_params).call
         if service_result.success?
-          render_created(data: service_result.data.user_attributes)
+          render_created(data: service_result.data.attributes.except('password', 'created_at', 'updated_at'))
         else
           render_error(data: service_result.message)
         end
