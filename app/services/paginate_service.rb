@@ -13,7 +13,7 @@ class PaginateService
 
   def call
 
-    return ServiceResult.new(status: false, message: "Limit can't be less than 1") if @limit <= 0
+    return ServiceResult.new(status: false, message: "Limit can't be less than 1") if @limit <= -1
 
     return ServiceResult.new(status: false, message: "Page can't be less than 1") if @page <= 0
 
