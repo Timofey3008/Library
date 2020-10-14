@@ -13,26 +13,12 @@ class PaginateService
 
   def call
 
-    return ServiceResult.new(status: false, message: "Limit can't be less than 1") if @limit <= -1
+    return ServiceResult.new(status: false, message: "Limit can't be less than 1") if @limit < 0
 
     return ServiceResult.new(status: false, message: "Page can't be less than 1") if @page <= 0
 
     @model = @model.limit(@limit).offset((@page - 1) * @limit).order(:id)
     ServiceResult.new(status: true, message: "Service Complete", data: @model.to_a)
-
-
-    # Rails.logger.info("- Start #{self.class.name} with organization##{@organization.id}")
-    #
-    # if !@organization.auto_refill?
-    #   return ServiceResult.new(status: true, message: 'organization has no auto refill')
-    # end
-    #
-    # if !@organization.credit_card?
-    #   return ServiceResult.new(status: true, message: 'organization has no credit card')
-    # end
-    #
-    # Rails.logger.info("- Finish #{self.class.name} with organization##{@organization.id}")
-
 
   rescue => e
     ServiceResult.new(

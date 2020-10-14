@@ -11,7 +11,7 @@ class ReturnToOwnerService
     return ServiceResult.new(status: false, message: "User don't have this book") unless @book.present?
     if @book.reader_user_id.present? and @book.reader_user_id != @user.id
       UserMailer.with(book: @book).return_to_owner.deliver_now
-      ServiceResult.new(status: true, message: "Service Complete", data: "Request to the reader was sent")
+      ServiceResult.new(status: true, message: "Service Complete", data: @book)
     else
       return ServiceResult.new(status: false, message: "User already took his book") if @book.status == 'picked_up'
       UserMailer.with(book: @book).returned.deliver_now
