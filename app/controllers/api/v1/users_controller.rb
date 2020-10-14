@@ -9,7 +9,7 @@ module Api
         if @user.mail == 'tim148@mail.ru'
           service_result = PaginateService.build(User, limit: params[:limit], page: params[:page]).call
           if service_result.success?
-            render_success(data: service_result.data.map{ |elem| elem.user_attributes})
+            render_success(data: service_result.data.map { |elem| elem.user_attributes })
           else
             render_error(data: service_result.message)
           end
@@ -19,12 +19,11 @@ module Api
       end
 
       def show
-        render_forbidden(data: "User is not moderator")if @user.mail != 'tim148@mail.ru'
+        render_forbidden(data: "User is not moderator") if @user.mail != 'tim148@mail.ru'
         render_success(data: User.find_by(id: params[:id]).user_attributes) if @user.mail == 'tim148@mail.ru'
       end
 
       def login
-
         service_result = LoginService.new(User, params).call
         if service_result.success?
           render_success(data: service_result.data)
