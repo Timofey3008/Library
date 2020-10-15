@@ -22,7 +22,8 @@ gem 'pagy'
 gem 'whenever', require: false
 
 gem 'resque'
-#gem 'resue-scheduler'
+gem 'resque-scheduler'
+gem 'resque-web', require: 'resque_web'
 
 
 gem 'rswag'#, git: 'https://github.com/rswag/rswag.git'

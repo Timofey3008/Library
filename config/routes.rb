@@ -1,6 +1,13 @@
+require 'resque/server'
+require 'resque/scheduler'
+require 'resque/scheduler/server'
+require "resque_web"
+
 Rails.application.routes.draw do
   mount Rswag::Api::Engine => '/api-docs'
   mount Rswag::Ui::Engine => '/api-docs'
+  mount Resque::Server.new, at: "/resque"
+  mount ResqueWeb::Engine => "/resque_web"
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   namespace 'api' do
