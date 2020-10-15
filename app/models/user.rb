@@ -2,7 +2,7 @@ class User < ApplicationRecord
   has_many :books, foreign_key: :owner_id
 
   validates :mail, format: {with: URI::MailTo::EMAIL_REGEXP}, presence: true, uniqueness: true
-  validates :password, presence: true
+  validates :password, presence: true, :length => {:within => 6..40}
 
   before_create -> { self.token = generate_token }
   before_create :hash_password

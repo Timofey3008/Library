@@ -266,7 +266,7 @@ paths:
         in: path
         required: true
         schema:
-          type: string
+          type: integer
     put:
       summary: Reserve book
       tags:
@@ -293,7 +293,7 @@ paths:
         description: id
         required: true
         schema:
-          type: string
+          type: integer
     put:
       summary: Return book
       tags:
@@ -391,7 +391,7 @@ paths:
         description: id
         required: true
         schema:
-          type: string
+          type: integer
     put:
       summary: Return book to owner
       tags:
@@ -511,7 +511,7 @@ paths:
         description: id
         required: true
         schema:
-          type: string
+          type: integer
     get:
       summary: Show user
       tags:
