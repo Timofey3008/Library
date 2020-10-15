@@ -1,0 +1,5 @@
+notification:
+  every: 1d
+  class: Notification
+  args:
+  description: “Every day notification for reader which reading book more that 1 month”

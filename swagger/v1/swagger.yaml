@@ -240,7 +240,7 @@ paths:
         in: path
         required: true
         schema:
-          type: string
+          type: integer
     get:
       summary: Show book
       tags:
