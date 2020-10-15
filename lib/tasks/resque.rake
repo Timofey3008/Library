@@ -10,7 +10,7 @@ namespace :resque do
     require 'resque'
     require 'resque/scheduler'
 
-    Resque.redis = 'localhost:6379'
+    #Resque.redis = 'localhost:6379'
 
     Resque.schedule = YAML.load_file("#{Rails.root}/config/resque_schedule.yml")
   end
