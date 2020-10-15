@@ -2,13 +2,12 @@ require 'resque'
 require 'resque/tasks'
 require 'resque/scheduler/tasks'
 
-#task "resque:setup" => :environment
 task "resque:preload" => :environment
+task "resque:setup" => :environment
 
 namespace :resque do
-  task :preload do
+  task :setup do
     require 'resque'
-    #require 'resque_scheduler'
     require 'resque/scheduler'
 
     Resque.redis = 'localhost:6379'

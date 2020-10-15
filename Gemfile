@@ -23,7 +23,7 @@ gem 'whenever', require: false
 
 gem 'resque'
 gem 'resque-scheduler'
-gem 'resque-web', require: 'resque_web'
+gem 'resque-web'
 
 
 gem 'rswag'#, git: 'https://github.com/rswag/rswag.git'
