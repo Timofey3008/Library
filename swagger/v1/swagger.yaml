@@ -171,6 +171,17 @@ components:
               type: integer
             mail:
               type: string
+    bad_request:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 400
+        status:
+          type: integer
+          example: Bad request
+        data:
+          type: string
 paths:
   "/api/v1/books/":
     get:
@@ -217,7 +228,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/book_created'
-
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  status:
+                    type: integer
+                    example: Bad request
+                  data:
+                    type: object
         '401':
           description: Unauthorized
           content:
@@ -280,6 +305,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/book_successful'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/bad_request'
         '401':
           description: Unauthorized
           content:
@@ -307,6 +338,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/book_successful'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/bad_request'
         '401':
           description: Unauthorized
           content:
@@ -405,6 +442,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/book_successful'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/bad_request'
         '401':
           description: Unauthorized
           content:
@@ -491,6 +534,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/user_created'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  status:
+                    type: integer
+                    example: Bad request
+                  data:
+                    type: object
       requestBody:
         content:
           application/json:
