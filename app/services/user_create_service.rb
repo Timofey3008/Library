@@ -14,5 +14,11 @@ class UserCreateService
     else
       ServiceResult.new(status: false, message: @user.errors)
     end
+  rescue => e
+    ServiceResult.new(
+        status: false,
+        exception: e,
+        message: e.message
+    )
   end
 end

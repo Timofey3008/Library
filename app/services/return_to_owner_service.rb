@@ -18,6 +18,12 @@ class ReturnToOwnerService
       @book.update(status: :picked_up, reader_user_id: nil, dead_line: nil)
       ServiceResult.new(status: true, message: "Service Complete", data: @book)
     end
+  rescue => e
+    ServiceResult.new(
+        status: false,
+        exception: e,
+        message: e.message
+    )
   end
 end
 

@@ -13,5 +13,11 @@ class LoginService
     else
       ServiceResult.new(status: false, message: "Incorrect credentials")
     end
+  rescue => e
+    ServiceResult.new(
+        status: false,
+        exception: e,
+        message: e.message
+    )
   end
 end

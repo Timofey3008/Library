@@ -12,5 +12,11 @@ class BookReturnService
     UserMailer.with(book: @book).return.deliver_now
     @book.update(status: :in_library, reader_user_id: nil, dead_line: nil)
     ServiceResult.new(status: true, message: "Service Complete", data: @book)
+  rescue => e
+    ServiceResult.new(
+        status: false,
+        exception: e,
+        message: e.message
+    )
   end
 end

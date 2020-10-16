@@ -15,5 +15,11 @@ class BookReserveService
     @book.update(status: :reserved, reader_user_id: @user.id, dead_line: DateTime.now + 1.months)
     UserMailer.with(book: @book).book_reserved.deliver_now
     ServiceResult.new(status: true, message: "Service Complete", data: @book)
+  rescue => e
+    ServiceResult.new(
+        status: false,
+        exception: e,
+        message: e.message
+    )
   end
 end

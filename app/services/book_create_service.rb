@@ -14,6 +14,11 @@ class BookCreateService
     else
       ServiceResult.new(status: false, message: @book.errors)
     end
-
+  rescue => e
+    ServiceResult.new(
+        status: false,
+        exception: e,
+        message: e.message
+    )
   end
 end
