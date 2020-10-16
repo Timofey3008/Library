@@ -574,7 +574,6 @@ paths:
                     example: Bad request
                   data:
                     type: string
-                    example: Incorrect credentials
       requestBody:
         content:
           application/json:
