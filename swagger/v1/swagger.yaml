@@ -646,7 +646,7 @@ paths:
                 - mail
                 - password
 servers:
-  - url: https://powerful-citadel-31931.herokuapp.com
+  - url: http://localhost:3000
     variables:
       defaultHost:
-        default: https://powerful-citadel-31931.herokuapp.com
+        default: http://localhost:3000

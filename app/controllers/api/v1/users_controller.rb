@@ -19,8 +19,16 @@ module Api
       end
 
       def show
-        render_forbidden(data: "User is not moderator") if @user.mail != 'tim148@mail.ru'
-        render_success(data: User.find_by(id: params[:id]).user_attributes) if @user.mail == 'tim148@mail.ru'
+        if @user.mail == 'tim148@mail.ru' or @user.id == params[:id].to_i
+          service_result = UserShowService.new(User, params).call
+          if service_result.success?
+            render_success(data: service_result.data)
+          else
+            render_error(data: service_result.message)
+          end
+        else
+          render_forbidden(data: "User is not moderator")
+        end
       end
 
       def login
