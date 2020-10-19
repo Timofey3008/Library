@@ -2,7 +2,13 @@ class ApplicationController < ActionController::API
   private
 
   def render_success(code: 200, status: :OK, data: [])
-    render json: {code: code, status: status, data: data}
+    if data.present?
+      render json: {code: code, status: status, data: data}
+    elsif data.is_a?(Array)
+      render json: {code: code, status: status, data: data}
+    else
+      render json: {code: 204, status: 'No Content', data: {}}, status: :no_content
+    end
   end
 
   def render_error(code: 400, status: 'Bad Request', data: [])
