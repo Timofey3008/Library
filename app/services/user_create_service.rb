@@ -7,12 +7,14 @@ class UserCreateService
 
   def call
     @user = @user.new(@user_params)
+
     if @user.save
       UserMailer.with(user: @user).welcome_email.deliver_now
       ServiceResult.new(status: true, message: "Service Complete", data: @user)
     else
       ServiceResult.new(status: false, message: @user.errors)
     end
+
   rescue => e
     ServiceResult.new(
         status: false,

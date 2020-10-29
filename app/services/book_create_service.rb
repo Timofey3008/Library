@@ -6,14 +6,15 @@ class BookCreateService
   end
 
   def call
-
     @book = @user.books.new(@book_name)
+
     if @book.save
       UserMailer.with(book: @book, user: @user).book_registration.deliver_now
       ServiceResult.new(status: true, message: "Service Complete", data: @book)
     else
       ServiceResult.new(status: false, message: @book.errors)
     end
+
   rescue => e
     ServiceResult.new(
         status: false,
